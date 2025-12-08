@@ -241,34 +241,6 @@ O sistema processa uploads CSV em lotes de 1000 produtos para:
 - Reduzir uso de memória
 - Manter responsividade da aplicação
 
-## 📝 Variáveis de Ambiente
-
-### Backend (.env)
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/database_name"
-JWT_SECRET="your-super-secret-jwt-key-here"
-PORT=3000
-```
-
-### Frontend (.env.local)
-```env
-NEXT_PUBLIC_API_URL="http://localhost:3000"
-```
-
-> ⚠️ **IMPORTANTE**: Nunca commite o arquivo `.env` com valores reais. Use `.env.example` para documentar variáveis necessárias.
-
-## 🧪 Testes
-
-```bash
-# Backend
-cd backend
-npm run test
-
-# Frontend
-cd frontend
-npm run test
-```
-
 ## 📦 Build para Produção
 
 ### Backend
