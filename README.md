@@ -206,7 +206,7 @@ DELETE /users/:id             - Excluir/Desativar conta
 
 ## 🔒 Segurança
 
-- ✅ Senhas hasheadas com bcrypt (10 rounds)
+- ✅ Senhas hasheadas com bcrypt 
 - ✅ Validação de DTOs com class-validator
 - ✅ Proteção de rotas com JWT Guards
 - ✅ Whitelist de propriedades (ValidationPipe)
