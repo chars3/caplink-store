@@ -11,10 +11,19 @@ import Link from 'next/link';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+
+    // Validação client-side
+    if (password.length < 8) {
+      setError('A senha deve ter no mínimo 8 caracteres');
+      return;
+    }
+
     try {
       const response = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', response.data.access_token);
@@ -27,7 +36,7 @@ export default function LoginPage() {
         window.location.href = '/';
       }
     } catch (error) {
-      alert('Falha no login. Verifique suas credenciais.');
+      setError('Falha no login. Verifique suas credenciais.');
     }
   };
 
@@ -83,7 +92,12 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    minLength={8}
+                    className={error ? 'border-red-500' : ''}
                   />
+                  {error && (
+                    <p className="text-sm text-red-500 mt-1">{error}</p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full">
                   Entrar
