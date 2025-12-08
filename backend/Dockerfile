@@ -42,6 +42,8 @@ EXPOSE 8080
 # Criar script de startup
 RUN echo '#!/bin/sh\n\
 echo "Starting application..."\n\
+echo "Running Prisma migrations..."\n\
+npx prisma db push --accept-data-loss || echo "Migration failed, continuing..."\n\
 echo "Generating Prisma Client..."\n\
 npx prisma generate || echo "Prisma generate failed, continuing..."\n\
 echo "Starting NestJS application..."\n\
@@ -49,4 +51,5 @@ exec npm run start:prod' > /app/start.sh && chmod +x /app/start.sh
 
 # Comando para iniciar
 CMD ["/app/start.sh"]
+
 
