@@ -1,7 +1,10 @@
 # Dockerfile para Backend NestJS
-FROM node:18-alpine AS builder
+FROM node:18-slim AS builder
 
 WORKDIR /app
+
+# Instalar OpenSSL para Prisma
+RUN apt-get update -y && apt-get install -y openssl
 
 # Copiar arquivos de dependências
 COPY package*.json ./
@@ -20,9 +23,12 @@ RUN npm run build
 RUN npx prisma generate
 
 # Imagem de produção
-FROM node:18-alpine
+FROM node:18-slim
 
 WORKDIR /app
+
+# Instalar OpenSSL para Prisma
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 # Copiar apenas o necessário do builder
 COPY --from=builder /app/node_modules ./node_modules
