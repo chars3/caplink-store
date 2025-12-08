@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //instância do axios configurada para a api
 const api = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
 });
 
 //interceptor que adiciona token jwt em todas as requisições
