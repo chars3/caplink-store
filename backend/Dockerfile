@@ -33,5 +33,14 @@ COPY package*.json ./
 # Expor porta 8080 (padrão do Cloud Run)
 EXPOSE 8080
 
-# Comando para iniciar (executa migrations e inicia app)
-CMD ["sh", "-c", "npx prisma db push && npm run start:prod"]
+# Criar script de startup
+RUN echo '#!/bin/sh\n\
+echo "Starting application..."\n\
+echo "Generating Prisma Client..."\n\
+npx prisma generate || echo "Prisma generate failed, continuing..."\n\
+echo "Starting NestJS application..."\n\
+exec npm run start:prod' > /app/start.sh && chmod +x /app/start.sh
+
+# Comando para iniciar
+CMD ["/app/start.sh"]
+
