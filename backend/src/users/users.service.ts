@@ -17,8 +17,8 @@ export class UsersService {
     });
 
     if (existingUser) {
-      //se usuário existe mas está desativado, reativa a conta
-      if (!existingUser.isActive) {
+      //se usuário existe mas está desativado (só SELLER), reativa a conta
+      if (!existingUser.isActive && existingUser.role === 'SELLER') {
         const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
         return this.prisma.user.update({
           where: { id: existingUser.id },
@@ -67,11 +67,36 @@ export class UsersService {
     });
   }
 
-  //desativa usuário (soft delete)
-  remove(id: string) {
-    return this.prisma.user.update({
+  //remove usuário (hard delete para CLIENT, soft delete para SELLER)
+  async remove(id: string) {
+    //busca usuário para verificar role
+    const user = await this.prisma.user.findUnique({
       where: { id },
-      data: { isActive: false },
     });
+
+    if (!user) {
+      throw new Error('Usuário não encontrado');
+    }
+
+    if (user.role === 'SELLER') {
+      //vendedor: soft delete (preserva produtos e histórico de vendas)
+      return this.prisma.user.update({
+        where: { id },
+        data: { isActive: false },
+      });
+    } else {
+      //cliente: hard delete (remove tudo)
+      //primeiro remove dados relacionados
+      await this.prisma.favorite.deleteMany({ where: { userId: id } });
+      await this.prisma.cartItem.deleteMany({
+        where: { cart: { userId: id } }
+      });
+      await this.prisma.cart.deleteMany({ where: { userId: id } });
+
+      //depois remove o usuário
+      return this.prisma.user.delete({
+        where: { id },
+      });
+    }
   }
 }
