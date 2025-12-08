@@ -11,6 +11,15 @@ export class UsersService {
 
   //cria novo usuário com senha hasheada
   async create(createUserDto: CreateUserDto) {
+    //verifica se email já existe
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email: createUserDto.email },
+    });
+
+    if (existingUser) {
+      throw new Error('Email já cadastrado');
+    }
+
     //gera hash da senha com salt de 10 rounds
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     return this.prisma.user.create({

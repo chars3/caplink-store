@@ -24,6 +24,14 @@ export class AuthController {
   //endpoint para registro de novo usuário
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.register(createUserDto);
+    try {
+      return await this.authService.register(createUserDto);
+    } catch (error) {
+      //retorna erro 400 se email já existe
+      if (error.message === 'Email já cadastrado') {
+        throw new UnauthorizedException('Email já cadastrado');
+      }
+      throw error;
+    }
   }
 }
