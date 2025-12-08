@@ -12,15 +12,18 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     // Validação client-side
     if (password.length < 8) {
       setError('A senha deve ter no mínimo 8 caracteres');
+      setLoading(false);
       return;
     }
 
@@ -35,8 +38,10 @@ export default function LoginPage() {
       } else {
         window.location.href = '/';
       }
-    } catch (error) {
-      setError('Falha no login. Verifique suas credenciais.');
+    } catch (error: any) {
+      const message = error.response?.data?.message || 'Falha no login. Verifique suas credenciais.';
+      setError(message);
+      setLoading(false);
     }
   };
 
@@ -99,8 +104,8 @@ export default function LoginPage() {
                     <p className="text-sm text-red-500 mt-1">{error}</p>
                   )}
                 </div>
-                <Button type="submit" className="w-full">
-                  Entrar
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? 'Entrando...' : 'Entrar'}
                 </Button>
               </form>
               <div className="mt-4 text-center text-sm">
