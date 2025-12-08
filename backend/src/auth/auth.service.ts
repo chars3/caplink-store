@@ -16,8 +16,8 @@ export class AuthService {
   async validateUser(email: string, pass: string): Promise<any> {
     //busca usuário pelo email
     const user = await this.usersService.findByEmail(email);
-    //compara senha fornecida com hash armazenado
-    if (user && (await bcrypt.compare(pass, user.password))) {
+    //verifica se usuário existe, está ativo e senha está correta
+    if (user && user.isActive && (await bcrypt.compare(pass, user.password))) {
       //remove senha do objeto retornado por segurança
       const { password, ...result } = user;
       return result;
