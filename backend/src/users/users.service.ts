@@ -17,6 +17,20 @@ export class UsersService {
     });
 
     if (existingUser) {
+      //se usuário existe mas está desativado, reativa a conta
+      if (!existingUser.isActive) {
+        const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+        return this.prisma.user.update({
+          where: { id: existingUser.id },
+          data: {
+            name: createUserDto.name,
+            password: hashedPassword,
+            role: createUserDto.role,
+            isActive: true,
+          },
+        });
+      }
+      //se usuário está ativo, retorna erro
       throw new Error('Email já cadastrado');
     }
 
