@@ -240,14 +240,16 @@ npx prisma studio      # Interface visual do DB
 
 ```env
 # Database
-DATABASE_URL="postgresql://user:password@localhost:5432/caplink_store"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/caplink_store"
 
 # JWT
-JWT_SECRET="your-secret-key-here"
+JWT_SECRET="your-secret-key-change-in-production"
 
 # Server
 PORT=3000
 ```
+
+> ⚠️ **SEGURANÇA**: Nunca commite valores reais de produção. Use secrets managers em produção (ex: GCP Secret Manager).
 
 ## 📝 Endpoints Completos
 
