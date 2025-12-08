@@ -14,10 +14,19 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('CLIENT');
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+
+    // Validação client-side
+    if (password.length < 8) {
+      setError('A senha deve ter no mínimo 8 caracteres');
+      return;
+    }
+
     try {
       const response = await api.post('/auth/register', { name, email, password, role });
       localStorage.setItem('token', response.data.access_token);
@@ -29,7 +38,7 @@ export default function RegisterPage() {
         window.location.href = '/';
       }
     } catch (error) {
-      alert('Falha no cadastro. Tente novamente.');
+      setError('Falha no cadastro. Tente novamente.');
     }
   };
 
@@ -78,11 +87,16 @@ export default function RegisterPage() {
                 <div className="grid gap-2">
                   <Input
                     type="password"
-                    placeholder="Senha"
+                    placeholder="Senha (mínimo 8 caracteres)"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    minLength={8}
+                    className={error ? 'border-red-500' : ''}
                   />
+                  {error && (
+                    <p className="text-sm text-red-500 mt-1">{error}</p>
+                  )}
                 </div>
                 <div className="grid gap-2">
                   <Select onValueChange={setRole} defaultValue={role}>
