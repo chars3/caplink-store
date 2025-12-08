@@ -235,32 +235,6 @@ npx prisma generate    # Gera Prisma Client
 npx prisma db push     # Sincroniza schema com DB
 npx prisma studio      # Interface visual do DB
 ```
-
-## 🌐 Variáveis de Ambiente
-
-```env
-# Database
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/caplink_store"
-
-# JWT
-JWT_SECRET="your-secret-key-change-in-production"
-
-# Server
-PORT=3000
-```
-
-> ⚠️ **SEGURANÇA**: Nunca commite valores reais de produção. Use secrets managers em produção (ex: GCP Secret Manager).
-
-## 📝 Endpoints Completos
-
-### Auth
-- `POST /auth/register` - Criar conta
-- `POST /auth/login` - Login
-
-### Products
-- `GET /products` - Listar (paginado)
-- `GET /products/:id` - Buscar por ID
-- `POST /products` - Criar (Seller)
 - `PATCH /products/:id` - Atualizar (Seller)
 - `DELETE /products/:id` - Deletar (Seller)
 - `POST /products/upload` - Upload CSV (Seller)

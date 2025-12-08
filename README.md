@@ -245,17 +245,17 @@ O sistema processa uploads CSV em lotes de 1000 produtos para:
 
 ### Backend (.env)
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/caplink_store"
-JWT_SECRET="your-secret-key-change-in-production"
+DATABASE_URL="postgresql://user:password@localhost:5432/database_name"
+JWT_SECRET="your-super-secret-jwt-key-here"
 PORT=3000
 ```
 
-### Frontend
+### Frontend (.env.local)
 ```env
 NEXT_PUBLIC_API_URL="http://localhost:3000"
 ```
 
-> ⚠️ **IMPORTANTE**: Nunca commite o arquivo `.env` com valores reais. Use valores diferentes em produção!
+> ⚠️ **IMPORTANTE**: Nunca commite o arquivo `.env` com valores reais. Use `.env.example` para documentar variáveis necessárias.
 
 ## 🧪 Testes
 
