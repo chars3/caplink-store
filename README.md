@@ -202,9 +202,7 @@ DELETE /users/:id             - Excluir/Desativar conta
 | Next.js frontend | ✅ | v16 com App Router |
 | Node.js backend | ✅ | NestJS v11 |
 | Banco de dados | ✅ | PostgreSQL + Prisma |
-| Deploy | ⚠️ | A configurar |
 
-**Score: 94% dos requisitos implementados**
 
 ## 🔒 Segurança
 
