@@ -39,7 +39,16 @@ export default function LoginPage() {
         window.location.href = '/';
       }
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Falha no login. Verifique suas credenciais.';
+      console.error('Login error:', error);
+      let message = 'Falha no login. Verifique suas credenciais.';
+
+      if (error.response?.data?.message) {
+        // Mensagem do backend
+        message = Array.isArray(error.response.data.message)
+          ? error.response.data.message[0]
+          : error.response.data.message;
+      }
+
       setError(message);
       setLoading(false);
     }

@@ -15,15 +15,18 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('CLIENT');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     // Validação client-side
     if (password.length < 8) {
       setError('A senha deve ter no mínimo 8 caracteres');
+      setLoading(false);
       return;
     }
 
@@ -37,8 +40,19 @@ export default function RegisterPage() {
       } else {
         window.location.href = '/';
       }
-    } catch (error) {
-      setError('Falha no cadastro. Tente novamente.');
+    } catch (error: any) {
+      console.error('Register error:', error);
+      let message = 'Falha no cadastro. Tente novamente.';
+
+      if (error.response?.data?.message) {
+        // Mensagem do backend
+        message = Array.isArray(error.response.data.message)
+          ? error.response.data.message[0]
+          : error.response.data.message;
+      }
+
+      setError(message);
+      setLoading(false);
     }
   };
 
@@ -109,8 +123,8 @@ export default function RegisterPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button type="submit" className="w-full">
-                  Cadastrar
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? 'Cadastrando...' : 'Cadastrar'}
                 </Button>
               </form>
               <div className="mt-4 text-center text-sm">
