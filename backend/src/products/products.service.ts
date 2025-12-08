@@ -11,14 +11,14 @@ export class ProductsService {
   constructor(private prisma: PrismaService) { }
 
   //cria novo produto vinculado ao vendedor
-  create(createProductDto: CreateProductDto) {
+  create(createProductDto: CreateProductDto, sellerId: string) {
     return this.prisma.product.create({
       data: {
         name: createProductDto.name,
         description: createProductDto.description,
         price: parseFloat(createProductDto.price.toString()), //garante que preço seja float
         imageUrl: createProductDto.imageUrl,
-        seller: { connect: { id: createProductDto.sellerId } },
+        seller: { connect: { id: sellerId } },
       },
     });
   }

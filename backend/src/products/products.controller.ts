@@ -15,9 +15,9 @@ export class ProductsController {
   @UseGuards(AuthGuard('jwt'))
   @Post()
   create(@Body() createProductDto: CreateProductDto, @Request() req) {
-    //força sellerId do token para segurança
-    createProductDto.sellerId = req.user.userId;
-    return this.productsService.create(createProductDto);
+    //extrai sellerId do token jwt para segurança
+    const sellerId = req.user.userId;
+    return this.productsService.create(createProductDto, sellerId);
   }
 
   //lista produtos com paginação e filtros
