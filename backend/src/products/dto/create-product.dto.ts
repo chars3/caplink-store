@@ -23,6 +23,5 @@ export class CreateProductDto {
   @IsNotEmpty({ message: 'imageUrl é obrigatória' })
   imageUrl: string;
 
-  //sellerId será extraído do token jwt no controller
-  sellerId?: string;
+  //nota: sellerId é extraído do token jwt no controller, não deve ser enviado pelo cliente
 }
